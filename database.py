@@ -2,24 +2,26 @@ import psycopg2
 
 def connect_to_db():
     HOST = "localhost"
-    PORT = 5432
+    PORT = 12345
     DATABASE = "accountinfo"
     USER = "postgres"
     PASSWORD = "0010"
 
     try:
-        connecion = psycopg2.connect(
+        connection = psycopg2.connect(
             host=HOST,
             port=PORT,
             database=DATABASE,
             user=USER,
             password=PASSWORD
         )
-        return connecion
+        return connection
     except (Exception, psycopg2.Error) as error:
         print("Error connecting to PostgreSQL database:", error)
         raise
 
+
+#This execute function needs to be cleaned up (hard to read)
 def execute_query(query, params=None):
     conn = connect_to_db()
     try:
@@ -49,6 +51,23 @@ def get_user_by_username(username):
     query = "SELECT * FROM users WHERE username = %s"
     params = (username,)
     return execute_query(query, params)
+
+def username_exists(username):
+    query = "SELECT COUNT(*) FROM users WHERE username = %s"
+    result = execute_query(query, (username,))
+    return result[0][0] > 0
+
+def insert_user(user):
+    query = "INSERT INTO users (first_name, middle_name, last_name, username, password) VALUES (%s, %s, %s, %s, %s)"
+    params = (user.first_name, user.middle_name, user.last_name, user.username, user.password)
+    execute_query(query, params)
+
+
+
+if __name__ == "__main__":
+    username = input("Enter Username: ")
+    user_info = get_user_by_username(username)
+    print(user_info)
 
 #Enter Username: cristiano56
 #Enter password: abcd

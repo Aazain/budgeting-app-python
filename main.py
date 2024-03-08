@@ -15,9 +15,9 @@ def main():
         choice = input("Enter your choice: ")
 
         if choice == "1":
-            login(database)
+            login()
         elif choice == "2":
-            signup(database)
+            signup()
         else:
             print("Invalid choice. Please try again.")
 

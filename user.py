@@ -14,4 +14,4 @@ class User:
     def verify_password(self, password):
         # Compare the entered password with the stored hashed password using bcrypt.checkpw()
         # Replace the placeholder with your actual implementation
-        return self.password == password  # Replace with actual comparison
+        return self == password  # Replace with actual comparison
