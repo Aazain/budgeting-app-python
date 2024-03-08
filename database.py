@@ -63,6 +63,16 @@ def insert_user(user):
     execute_query(query, params)
 
 
+def insert_budget(user_id, income, expenses, category):
+    query = "INSERT INTO budget (user_id, income, expenses, category) VALUES (%s, %s, %s, %s)"
+    params = (user_id, income, expenses, category)
+    execute_query(query, params)
+    
+def get_budget_by_user_id(user_id):
+    query = "SELECT * FROM budget WHERE user_id = %s"
+    params = (user_id,)
+    return execute_query(query, params)
+
 
 if __name__ == "__main__":
     username = input("Enter Username: ")

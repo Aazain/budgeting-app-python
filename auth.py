@@ -1,6 +1,7 @@
 import random
 from user import User
 from database import username_exists, insert_user, get_user_by_username
+from menu import manage_budget
 
 def signup():
     first_name = input("Enter First Name: ")
@@ -32,10 +33,11 @@ def login():
     user = get_user_by_username(username)
     if user:
         result = user[0]
+        user_id = result[0]
 
     if user and User.verify_password(result[5], password):  # Use User.verify_password from user.py
-        print("Login successful!")
-        # Implement logged-in user functionality (e.g., access budgets)
+        print("\nLogin successful!")
+        manage_budget(user_id)
     else:
         print("Invalid credentials. Please try again.\n")
         login()
