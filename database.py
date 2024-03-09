@@ -2,8 +2,8 @@ import psycopg2
 
 def connect_to_db():
     HOST = "localhost"
-    PORT = 12345
-    DATABASE = "accountinfo"
+    PORT = 5432 # your was 12345
+    DATABASE = "postgres" # "accountinfo"
     USER = "postgres"
     PASSWORD = "0010"
 
@@ -63,14 +63,14 @@ def insert_user(user):
     execute_query(query, params)
 
 
-def insert_budget(user_id, income, expenses, category):
-    query = "INSERT INTO budget (user_id, income, expenses, category) VALUES (%s, %s, %s, %s)"
-    params = (user_id, income, expenses, category)
+def insert_budget(user_id, income, expenses, category, month):
+    query = "INSERT INTO budget (user_id, income, expenses, category, month) VALUES (%s, %s, %s, %s, %s)"
+    params = (user_id, income, expenses, category, month)
     execute_query(query, params)
     
-def get_budget_by_user_id(user_id):
-    query = "SELECT * FROM budget WHERE user_id = %s"
-    params = (user_id,)
+def get_budget_by_user_id(user_id, month):
+    query = "SELECT * FROM budget WHERE user_id = %s AND month = %s"
+    params = (user_id, month)
     return execute_query(query, params)
 
 
@@ -81,3 +81,5 @@ if __name__ == "__main__":
 
 #Enter Username: cristiano56
 #Enter password: abcd
+# Enter Username: cristiano56
+# Enter password: abcd
