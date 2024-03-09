@@ -3,7 +3,8 @@ from database import insert_budget, get_budget_by_user_id
 
 
 def manage_budget(user_id):
-    months = [
+    while True:
+        months = [
         "January",
         "February",
         "March",
@@ -17,11 +18,9 @@ def manage_budget(user_id):
         "November",
         "December",
     ]
-    while True:
-        month_name = input("Enter the month (January-December): ")
-        month = (
-            months.index(month_name) + 1
-        )  # +1 because list starts at 0 but month start at 1
+        for i, month in enumerate(months, start=1):
+            print(f"{i}. {month}")
+        month = int(input("Enter the number of the month (1-12): "))
         print("\n1. Add Monthly Income")
         print("2. Add Expenses")
         print("3. View Budget")
