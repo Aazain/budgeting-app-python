@@ -3,7 +3,8 @@ from database import insert_budget, get_budget_by_user_id
 
 
 def manage_budget(user_id):
-    months = [
+    while True:
+        months = [
         "January",
         "February",
         "March",
