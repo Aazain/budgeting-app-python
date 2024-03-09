@@ -17,11 +17,11 @@ def manage_budget(user_id):
         "November",
         "December",
     ]
+    month_name = input("Enter the month (January-December): ")
+    month = (
+        months.index(month_name) + 1
+    )  # +1 because list starts at 0 but month start at 1
     while True:
-        month_name = input("Enter the month (January-December): ")
-        month = (
-            months.index(month_name) + 1
-        )  # +1 because list starts at 0 but month start at 1
         print("\n1. Add Monthly Income")
         print("2. Add Expenses")
         print("3. View Budget")
@@ -33,6 +33,7 @@ def manage_budget(user_id):
             income = float(input("Enter income amount: "))
             insert_budget(user_id, income, 0, "Income", month)
             print("Income added successfully!")
+
         elif choice == "2":
             expenses = float(input("Enter expenses amount: "))
             print("Choose a category:")

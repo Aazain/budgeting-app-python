@@ -2,8 +2,8 @@ import psycopg2
 
 def connect_to_db():
     HOST = "localhost"
-    PORT = 5432 # your was 12345
-    DATABASE = "postgres" # "accountinfo"
+    PORT = 12345 # your was 12345
+    DATABASE = "accountinfo" # "accountinfo"
     USER = "postgres"
     PASSWORD = "0010"
 
