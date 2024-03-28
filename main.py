@@ -10,7 +10,7 @@ def main():
     database = connect_to_db()
 
     while True:
-        print("1. Login")
+        print("\n1. Login")
         print("2. Sign Up")
         choice = input("Enter your choice: ")
 

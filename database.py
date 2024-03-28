@@ -74,7 +74,7 @@ def insert_budget(user_id, income, expenses, category, month):
     
 def get_budget_by_user_id(user_id, month):
     query = "SELECT * FROM budget WHERE user_id = %s AND month = %s"
-    params = (user_id, month)
+    params = (user_id, int(month))
     return execute_query(query, params)
 
 

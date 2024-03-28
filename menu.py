@@ -20,7 +20,7 @@ def manage_budget(user_id):
     for i, month in enumerate(months, start=1):
         print(f"{i}. {month}")
     month = int(input("Enter the number of the month (1-12): "))
-    
+
     while True:
         print("\n1. Add Monthly Income")
         print("2. Add Expenses")
@@ -32,7 +32,7 @@ def manage_budget(user_id):
         if choice == "1":
             income = float(input("Enter income amount: "))
             insert_budget(user_id, income, 0, "Income", month)
-            print("Income added successfully!")
+            print("\n---------------------------------\nIncome added successfully!\n---------------------------------")
         elif choice == "2":
             expenses = float(input("Enter expenses amount: "))
             print("Choose a category:")
@@ -48,7 +48,7 @@ def manage_budget(user_id):
             if category_choice == "6":
                 category = input("Enter custom category: ")
                 if not category:
-                    print("Invalid category name.")
+                    print("\n---------------------------------\nInvalid category name.\n---------------------------------")
                     continue
             elif category_choice.isdigit() and 1 <= int(category_choice) <= 5:
                 category = categories[int(category_choice) - 1]
@@ -57,12 +57,10 @@ def manage_budget(user_id):
                 continue
 
             insert_budget(user_id, 0, expenses, category, month)
-            print("Expenses added successfully!")
+            print("\n---------------------------------\nExpenses added successfully!\n---------------------------------")
 
         elif choice == "3":
             budget_entries = get_budget_by_user_id(user_id, month)  # passing month
-
-
             total_income = 0
             total_expenses = 0
             category_expenses = defaultdict(float)
@@ -75,7 +73,7 @@ def manage_budget(user_id):
 
             remaining_budget = total_income - total_expenses
 
-            print("\nBudget details for month", month)
+            print("\n---------------------------------\nBudget details for month", month)
 
             print(f"Total Income: {total_income}")
 
@@ -85,7 +83,7 @@ def manage_budget(user_id):
                 if category == "Income":
                     continue
                 print(f"{category}: {expenses}")
-            print(f"Remaining Budget: {remaining_budget}")
+            print(f"Remaining Budget: {remaining_budget}\n---------------------------------")
         elif choice == "4":
             break
         else:
