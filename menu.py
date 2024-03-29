@@ -85,6 +85,7 @@ def manage_budget(user_id):
                 print(f"{category}: {expenses}")
             print(f"Remaining Budget: {remaining_budget}\n---------------------------------")
         elif choice == "4":
-            break
+            print("\n")
+            manage_budget(user_id)
         else:
             print("Invalid choice. Please try again.")
