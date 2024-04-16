@@ -12,7 +12,12 @@ def main():
     while True:
         print("\n1. Login")
         print("2. Sign Up")
-        choice = input("Enter your choice: ")
+        try:
+            choice = input("Enter your choice: ")
+        except EOFError:
+            print("\nExiting...")
+            break
+
 
         if choice == "1":
             login()
