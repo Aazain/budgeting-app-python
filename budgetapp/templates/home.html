@@ -1,1 +1,107 @@
-<h1>homepage</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget Dashboard</title>
+</head>
+<body>
+    <h1>Budget Dashboard</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="month">Select Month:</label>
+        <select name="month" id="month">
+            <option id="1" value="1">January</option>
+            <option id="2" value="2">February</option>
+            <option id="3" value="3">March</option>
+            <option id="4" value="4">April</option>
+            <option id="5" value="5">May</option>
+            <option id="6" value="6">June</option>
+            <option id="7" value="7">July</option>
+            <option id="8" value="8">August</option>
+            <option id="9" value="9">September</option>
+            <option id="10" value="10">October</option>
+            <option id="11" value="11">November</option>
+            <option id="12" value="12">December</option>
+        </select>
+        <button type="button" id="addIncomeBtn">Add Income</button>
+        <button type="button" id="addExpensesBtn">Add Expenses</button>
+        <button type="button" id="viewBudgetBtn" style="display: none;">View Budget</button>
+    </form>
+    <form id="incomeForm" method="post" style="display: none;">
+        <br>
+        {% csrf_token %}
+        <label for="income_amount">Enter Income Amount:</label>
+        <input type="text" name="income_amount" id="income_amount">
+        <input type="hidden" name="month" id="income_month">
+        <button type="submit">Add Income</button>
+    </form>
+
+    <form id="expensesForm" method="post" style="display: none;">
+        <br>
+        {% csrf_token %}
+        <label for="expenses_amount">Enter Income Amount:</label>
+        <input type="text" name="expenses_amount" id="expenses_amount">
+        <input type="hidden" name="month" id="expenses_month">
+        <button type="submit">Add Expenses</button>
+    </form>
+
+    <h2 id="budgetDetailsTitle"></h2>
+    <div id="budgetDetails">
+        <p id="income"></p>
+        <p id="expenses"></p>
+        <p id="remaining"></p>
+    </div>
+
+    <script>
+        window.onload = function() {
+            document.getElementById("viewBudgetBtn").click();
+        }      
+
+        document.getElementById("budgetDetailsTitle").innerHTML = `Budget Details for ${document.getElementById(1).innerHTML}`;
+        document.getElementById("month").addEventListener("change", function() {
+            document.getElementById("viewBudgetBtn").click();;
+        })
+
+        document.getElementById("viewBudgetBtn").addEventListener("click", function() {
+            var month = document.getElementById("month").value;
+            document.getElementById("budgetDetailsTitle").innerHTML = ``;
+            document.getElementById("budgetDetailsTitle").innerHTML += `Budget Details for ${document.getElementById(month).innerHTML}`;
+            
+            fetch(`/get-budget?month=${month}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("income").innerHTML = `Income: $${data.income}`;
+                document.getElementById("expenses").innerHTML = `Expenses: $${data.expenses}`;
+                var remainingBudget = data.income - data.expenses;
+                document.getElementById("remaining").innerHTML = `Remaining Budget: $${remainingBudget}`;
+                document.getElementById("budgetDetails").style.display = "block";
+            })
+            .catch(error => {
+                document.getElementById("budgetDetailsTitle").innerHTML = `No Income for ${document.getElementById(month).innerHTML} Has Been set`;
+                document.getElementById("budgetDetails").style.display = "none";
+            });
+        });
+
+
+        document.getElementById("addIncomeBtn").addEventListener("click", function() {
+            var month = document.getElementById("month").value;
+            if (month !== "") {
+                document.getElementById("income_month").value = month;
+                document.getElementById("incomeForm").style.display = "block";
+            } else {
+                alert("Please select a month first.");
+            }
+        });
+
+        document.getElementById("addExpensesBtn").addEventListener("click", function() {
+            if (month !== "") {
+                document.getElementById("expenses_month").value = month;
+                document.getElementById("expensesForm").style.display = "block";
+            } else {
+                alert("Please select a month first.");
+            }
+        });
+    </script>
+</body>
+</html>
