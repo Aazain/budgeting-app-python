@@ -1,12 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
-from . models import User
-from django.http import HttpResponse
 from django.contrib import messages
-
-def signup_view(request):
-    return HttpResponse("This is my view.")
 
 def user_signup(request):
     if request.method == 'POST':
