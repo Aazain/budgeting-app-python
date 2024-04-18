@@ -6,6 +6,10 @@
     <title>Budget Dashboard</title>
 </head>
 <body>
+    <form id="logoutBtn" action="/logout-user/" method="post">
+        {% csrf_token %}
+        <button type="submit">Logout</button>
+    </form>
     <h1>Budget Dashboard</h1>
     <form method="post">
         {% csrf_token %}
@@ -28,7 +32,8 @@
         <button type="button" id="addExpensesBtn">Add Expenses</button>
         <button type="button" id="viewBudgetBtn" style="display: none;">View Budget</button>
     </form>
-    <form id="incomeForm" method="post" style="display: none;">
+
+    <form id="incomeForm" action="/add-income/" method="post" style="display: none;">
         <br>
         {% csrf_token %}
         <label for="income_amount">Enter Income Amount:</label>
@@ -37,7 +42,7 @@
         <button type="submit">Add Income</button>
     </form>
 
-    <form id="expensesForm" method="post" style="display: none;">
+    <form id="expensesForm" action="/add-expenses/" method="post" style="display: none;">
         <br>
         {% csrf_token %}
         <label for="expenses_amount">Enter Income Amount:</label>
@@ -86,6 +91,7 @@
 
         document.getElementById("addIncomeBtn").addEventListener("click", function() {
             var month = document.getElementById("month").value;
+            console.log(month)
             if (month !== "") {
                 document.getElementById("income_month").value = month;
                 document.getElementById("incomeForm").style.display = "block";

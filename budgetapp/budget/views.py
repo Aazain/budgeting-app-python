@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.urls import reverse
 from .forms import CustomUserCreationForm
@@ -18,8 +18,7 @@ def user_signup(request):
             password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=password)
             login(request, user)
-            messages.success(request, 'Account created successfully!')
-            return redirect('/')
+            return redirect('/login')
     else:
         form = CustomUserCreationForm()
     return render(request, 'signup.html', {'form': form})
@@ -33,7 +32,6 @@ def user_login(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                messages.success(request, 'Logged in successfully!')
                 return redirect('/')
             else:
                 messages.error(request, 'Invalid username or password.')
@@ -44,12 +42,11 @@ def user_login(request):
 
 @login_required
 def home_page(request):
-    if request.method == 'POST':
-        add_income(request)
-        return redirect('home')
-
     return render(request, 'home.html')
 
+def logout_user(request):
+    logout(request)
+    return redirect('/login/')
 
 def add_income(request):
     user = request.user
@@ -63,6 +60,22 @@ def add_income(request):
     else:
         budget.income = income_amount_decimal
     budget.save()
+    return redirect('home') 
+
+def add_expenses(request):
+    print(request.POST.get('month'))
+    user = request.user
+    month = request.POST.get('month')
+    expense_amount = request.POST.get('expenses_amount')
+    expense_amount_decimal = Decimal(expense_amount)
+    budget, created = Budget.objects.get_or_create(user=user, month=month)
+
+    if not created:
+        budget.expenses += expense_amount_decimal
+    else:
+        budget.expenses = expense_amount_decimal
+    budget.save()
+    return redirect('home')
 
 
 def get_budget(request):
