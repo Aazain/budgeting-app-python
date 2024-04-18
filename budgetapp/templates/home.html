@@ -91,9 +91,9 @@
 
         document.getElementById("addIncomeBtn").addEventListener("click", function() {
             var month = document.getElementById("month").value;
-            console.log(month)
             if (month !== "") {
                 document.getElementById("income_month").value = month;
+                console.log(month)
                 document.getElementById("incomeForm").style.display = "block";
             } else {
                 alert("Please select a month first.");
@@ -101,6 +101,7 @@
         });
 
         document.getElementById("addExpensesBtn").addEventListener("click", function() {
+            var month = document.getElementById("month").value;
             if (month !== "") {
                 document.getElementById("expenses_month").value = month;
                 document.getElementById("expensesForm").style.display = "block";

@@ -66,16 +66,16 @@ def add_expenses(request):
     print(request.POST.get('month'))
     user = request.user
     month = request.POST.get('month')
-    expense_amount = request.POST.get('expenses_amount')
-    expense_amount_decimal = Decimal(expense_amount)
+    income_amount = request.POST.get('expenses_amount')
+    income_amount_decimal = Decimal(income_amount)
     budget, created = Budget.objects.get_or_create(user=user, month=month)
 
     if not created:
-        budget.expenses += expense_amount_decimal
+        budget.expenses += income_amount_decimal
     else:
-        budget.expenses = expense_amount_decimal
+        budget.expenses = income_amount_decimal
     budget.save()
-    return redirect('home')
+    return redirect('home') 
 
 
 def get_budget(request):
