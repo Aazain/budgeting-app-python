@@ -2,7 +2,6 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from .models import Budget
 from .models import User
-import json
 from decimal import Decimal
 
 class addIncomeTest(TestCase):
@@ -19,7 +18,7 @@ class addIncomeTest(TestCase):
         self.assertEqual(budget.income, 2500)
 
 
-class addExpensesTest(TestCase):
+class AddExpensesTest(TestCase):
     def setUp(self):
         self.client = Client()
         self.user = User.objects.create_user(username='testuser', password='password')
@@ -30,7 +29,7 @@ class addExpensesTest(TestCase):
         self.assertRedirects(test, reverse('home'))
 
         budget = Budget.objects.get(user=self.user, month=1)
-        self.assertEqual(budget.expenses, 2500)
+        self.assertEqual(budget.expenses, Decimal(2500))
 
 
 class UserSignupTest(TestCase):

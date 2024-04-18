@@ -76,15 +76,20 @@
             fetch(`/get-budget?month=${month}`)
             .then(response => response.json())
             .then(data => {
-                document.getElementById("income").innerHTML = `Income: $${data.income}`;
-                document.getElementById("expenses").innerHTML = `Expenses: $${data.expenses}`;
-                var remainingBudget = data.income - data.expenses;
-                document.getElementById("remaining").innerHTML = `Remaining Budget: $${remainingBudget}`;
-                document.getElementById("budgetDetails").style.display = "block";
+                if(data.error == 'no budget set'){
+                    document.getElementById("budgetDetailsTitle").innerHTML = `No Income for ${document.getElementById(month).innerHTML} Has Been set`;
+                    document.getElementById("budgetDetails").style.display = "none";
+                }
+                else{
+                    document.getElementById("income").innerHTML = `Income: $${data.income}`;
+                    document.getElementById("expenses").innerHTML = `Expenses: $${data.expenses}`;
+                    var remainingBudget = data.income - data.expenses;
+                    document.getElementById("remaining").innerHTML = `Remaining Budget: $${remainingBudget}`;
+                    document.getElementById("budgetDetails").style.display = "block";
+                }
             })
             .catch(error => {
-                document.getElementById("budgetDetailsTitle").innerHTML = `No Income for ${document.getElementById(month).innerHTML} Has Been set`;
-                document.getElementById("budgetDetails").style.display = "none";
+                    console.log(error)
             });
         });
 

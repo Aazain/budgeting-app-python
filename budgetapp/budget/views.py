@@ -6,7 +6,7 @@ from django.urls import reverse
 from .forms import signUpForm
 from django.contrib.auth.decorators import login_required
 from .models import Budget
-from decimal import Decimal
+from decimal import Decimal 
 
 def user_signup(request):
     if request.method == 'POST':
@@ -17,7 +17,7 @@ def user_signup(request):
             password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=password)
             login(request, user)
-            return redirect('/login')
+            return redirect('/')
     else:
         form = signUpForm()
     return render(request, 'signup.html', {'form': form})
