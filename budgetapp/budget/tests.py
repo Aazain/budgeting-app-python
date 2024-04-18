@@ -29,7 +29,7 @@ class AddExpensesTest(TestCase):
         self.assertRedirects(test, reverse('home'))
 
         budget = Budget.objects.get(user=self.user, month=1)
-        self.assertEqual(budget.expenses, Decimal(2500))
+        self.assertEqual(budget.expenses, 2500)
 
 
 class UserSignupTest(TestCase):
