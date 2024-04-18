@@ -1,3 +1,4 @@
+from decimal import Decimal
 from django.test import TestCase, Client
 from django.urls import reverse
 from .models import Budget
