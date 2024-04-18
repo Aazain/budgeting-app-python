@@ -2,7 +2,6 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
-from django.contrib import messages
 from django.urls import reverse
 from .forms import signUpForm
 from django.contrib.auth.decorators import login_required

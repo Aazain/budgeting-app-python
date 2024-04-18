@@ -2,9 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
-    middle_name = models.CharField(max_length=255, blank=True)
-    groups = models.ManyToManyField('auth.Group', related_name='budget_users')
-    user_permissions = models.ManyToManyField('auth.Permission', related_name='budget_users')
+    pass
 
 class Budget(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='budgets')
