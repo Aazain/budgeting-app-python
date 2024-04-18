@@ -2,7 +2,6 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from .models import Budget
 from .models import User
-from decimal import Decimal
 
 class addIncomeTest(TestCase):
     def setUp(self):
