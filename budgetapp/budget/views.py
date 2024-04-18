@@ -4,23 +4,23 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.urls import reverse
-from .forms import CustomUserCreationForm
+from .forms import signUpForm
 from django.contrib.auth.decorators import login_required
 from .models import Budget
 from decimal import Decimal
 
 def user_signup(request):
     if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST)
+        form = signUpForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save()
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=password)
             login(request, user)
             return redirect('/login')
     else:
-        form = CustomUserCreationForm()
+        form = signUpForm()
     return render(request, 'signup.html', {'form': form})
 
 def user_login(request):
@@ -33,8 +33,6 @@ def user_login(request):
             if user is not None:
                 login(request, user)
                 return redirect('/')
-            else:
-                messages.error(request, 'Invalid username or password.')
     else:
         form = AuthenticationForm()
     return render(request, 'login.html', {'form': form})
@@ -63,7 +61,6 @@ def add_income(request):
     return redirect('home') 
 
 def add_expenses(request):
-    print(request.POST.get('month'))
     user = request.user
     month = request.POST.get('month')
     income_amount = request.POST.get('expenses_amount')
@@ -91,6 +88,6 @@ def get_budget(request):
             }
             return JsonResponse(data)
         else:
-            return JsonResponse("no budget set")
+            return JsonResponse({"error": "no budget set"}, status=400)
     
     return HttpResponseRedirect(reverse('home'))
