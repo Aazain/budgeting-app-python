@@ -45,12 +45,16 @@ def logout_user(request):
     logout(request)
     return redirect('/login/')
 
+# This add_income function adds the income to the database table. The request information (year, month, date)
+# comes from the form data with the action /add-income/ (home.html). 
 def add_income(request):
     user = request.user
     month = request.POST.get('month')
+    year = request.POST.get('year')
+    day = request.POST.get('day')
     income_amount = request.POST.get('income_amount')
     income_amount_decimal = Decimal(income_amount)
-    budget, created = Budget.objects.get_or_create(user=user, month=month)
+    budget, created = Budget.objects.get_or_create(user=user, year=year, month=month, day=day)
 
     if not created:
         budget.income += income_amount_decimal
@@ -62,9 +66,11 @@ def add_income(request):
 def add_expenses(request):
     user = request.user
     month = request.POST.get('month')
+    year = request.POST.get('year')
+    day = request.POST.get('day')
     income_amount = request.POST.get('expenses_amount')
     income_amount_decimal = Decimal(income_amount)
-    budget, created = Budget.objects.get_or_create(user=user, month=month)
+    budget, created = Budget.objects.get_or_create(user=user, year=year, month=month, day=day)
 
     if not created:
         budget.expenses += income_amount_decimal
@@ -78,11 +84,16 @@ def get_budget(request):
     if request.method == 'GET':
         user = request.user
         month = request.GET.get('month')
-        budget = Budget.objects.filter(user=user, month=month).first()
+        year = request.GET.get('year')
+        day = request.GET.get('day')
+        budget = Budget.objects.filter(user=user, year=year, month=month, day=day).first()
+        print(budget)
         if budget:
             data = {
                 'income': budget.income,
+                'year': budget.year,
                 'month': budget.month,
+                'day': budget.day,
                 'expenses': budget.expenses
             }
             return JsonResponse(data)

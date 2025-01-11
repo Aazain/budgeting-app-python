@@ -13,21 +13,8 @@
     <h1>Budget Dashboard</h1>
     <form method="post">
         {% csrf_token %}
-        <label for="month">Select Month:</label>
-        <select name="month" id="month">
-            <option id="1" value="1">January</option>
-            <option id="2" value="2">February</option>
-            <option id="3" value="3">March</option>
-            <option id="4" value="4">April</option>
-            <option id="5" value="5">May</option>
-            <option id="6" value="6">June</option>
-            <option id="7" value="7">July</option>
-            <option id="8" value="8">August</option>
-            <option id="9" value="9">September</option>
-            <option id="10" value="10">October</option>
-            <option id="11" value="11">November</option>
-            <option id="12" value="12">December</option>
-        </select>
+        <label for="selected_date">Select Month:</label>
+        <input type="date" id="selected_date" name="selected_date" value='2004-11-24'>
         <button type="button" id="addIncomeBtn">Add Income</button>
         <button type="button" id="addExpensesBtn">Add Expenses</button>
         <button type="button" id="viewBudgetBtn" style="display: none;">View Budget</button>
@@ -59,25 +46,38 @@
     </div>
 
     <script>
+        const months = [
+            "January", "February", "March", "April", "May", "June", 
+            "July", "August", "September", "October", "November", "December"
+        ];
+        
+        let dateValue = document.getElementById("selected_date").value
+        let date = new Date(dateValue)
+        let year = date.getFullYear()
+        let month = date.getMonth() + 1
+        let monthName = months[date.getMonth() + 1]
+        let day = date.getDate()
+
+        console.log(year, month, day)
+
         window.onload = function() {
             document.getElementById("viewBudgetBtn").click();
-        }      
+        }   
 
-        document.getElementById("budgetDetailsTitle").innerHTML = `Budget Details for ${document.getElementById(1).innerHTML}`;
-        document.getElementById("month").addEventListener("change", function() {
-            document.getElementById("viewBudgetBtn").click();;
+        document.getElementById("budgetDetailsTitle").innerHTML = `Budget Details for ${monthName}`;
+        document.getElementById("selected_date").addEventListener("change", function() {
+            document.getElementById("viewBudgetBtn").click();
         })
+        console.log(year, monthName, day)
 
         document.getElementById("viewBudgetBtn").addEventListener("click", function() {
-            var month = document.getElementById("month").value;
             document.getElementById("budgetDetailsTitle").innerHTML = ``;
-            document.getElementById("budgetDetailsTitle").innerHTML += `Budget Details for ${document.getElementById(month).innerHTML}`;
-            
-            fetch(`/get-budget?month=${month}`)
+            document.getElementById("budgetDetailsTitle").innerHTML += `Budget Details for ${monthName}`;
+            fetch(`/get-budget?year=${year}&month=${month}&day=${day}`)
             .then(response => response.json())
             .then(data => {
                 if(data.error == 'no budget set'){
-                    document.getElementById("budgetDetailsTitle").innerHTML = `No Income for ${document.getElementById(month).innerHTML} Has Been set`;
+                    document.getElementById("budgetDetailsTitle").innerHTML = `No Income for ${monthName} Has Been set`;
                     document.getElementById("budgetDetails").style.display = "none";
                 }
                 else{
@@ -95,10 +95,8 @@
 
 
         document.getElementById("addIncomeBtn").addEventListener("click", function() {
-            var month = document.getElementById("month").value;
             if (month !== "") {
-                document.getElementById("income_month").value = month;
-                console.log(month)
+                document.getElementById("income_month").value = date;
                 document.getElementById("incomeForm").style.display = "block";
             } else {
                 alert("Please select a month first.");
@@ -106,7 +104,6 @@
         });
 
         document.getElementById("addExpensesBtn").addEventListener("click", function() {
-            var month = document.getElementById("month").value;
             if (month !== "") {
                 document.getElementById("expenses_month").value = month;
                 document.getElementById("expensesForm").style.display = "block";

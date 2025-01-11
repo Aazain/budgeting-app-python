@@ -1,5 +1,6 @@
-//These are the tables used in this program. Ensure you have postgre setup with a database
-//"accountinfo" and containing the following tables
+// These are the tables used in this program. Ensure you have postgre setup with a database
+// "accountinfo" and containing the following tablesw
+// Use these SQL queries to create the necessary tables
 
 CREATE TABLE users
 (

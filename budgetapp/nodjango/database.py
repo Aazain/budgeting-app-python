@@ -1,11 +1,11 @@
 import psycopg2
 
 def connect_to_db():
-    HOST = "35.227.99.96"
+    HOST = "localhost"
     PORT = 5432 # your was 12345
     DATABASE = "accountinfo" # "accountinfo"
     USER = "postgres"
-    PASSWORD = "0010"
+    PASSWORD = "password123"
 
     try:
         connection = psycopg2.connect(
@@ -67,9 +67,9 @@ def insert_user(user):
     execute_query(query, params)
 
 
-def insert_budget(user_id, income, expenses, category, month):
-    query = "INSERT INTO budget (user_id, income, expenses, category, month) VALUES (%s, %s, %s, %s, %s)"
-    params = (user_id, income, expenses, category, month)
+def insert_budget(user_id, income, expenses, category, year, month, day):
+    query = "INSERT INTO budget (user_id, income, expenses, category, month) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+    params = (user_id, income, expenses, category, year, month, day)
     execute_query(query, params)
     
 def get_budget_by_user_id(user_id, month):
@@ -83,7 +83,3 @@ if __name__ == "__main__":
     user_info = get_user_by_username(username)
     print(user_info)
 
-#Enter Username: cristiano56
-#Enter password: abcd
-# Enter Username: cristiano56
-# Enter password: abcd
