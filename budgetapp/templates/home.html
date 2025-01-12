@@ -14,7 +14,7 @@
     <form method="post">
         {% csrf_token %}
         <label for="selected_date">Select Month:</label>
-        <input type="date" id="selected_date" name="selected_date" value='2004-11-24'>
+        <input type="date" id="selected_date" name="selected_date" value='2024-01-15'>
         <button type="button" id="addIncomeBtn">Add Income</button>
         <button type="button" id="addExpensesBtn">Add Expenses</button>
         <button type="button" id="viewBudgetBtn" style="display: none;">View Budget</button>
@@ -25,7 +25,9 @@
         {% csrf_token %}
         <label for="income_amount">Enter Income Amount:</label>
         <input type="text" name="income_amount" id="income_amount">
-        <input type="hidden" name="month" id="income_month">
+        <input type="hidden" name="incomeYear" id="income_year">
+        <input type="hidden" name="incomeMonth" id="income_month">
+        <input type="hidden" name="incomeDate" id="income_date">
         <button type="submit">Add Income</button>
     </form>
 
@@ -34,7 +36,7 @@
         {% csrf_token %}
         <label for="expenses_amount">Enter Income Amount:</label>
         <input type="text" name="expenses_amount" id="expenses_amount">
-        <input type="hidden" name="month" id="expenses_month">
+        <input type="hidden" name="incomeDate" id="expenses_date">
         <button type="submit">Add Expenses</button>
     </form>
 
@@ -52,13 +54,11 @@
         ];
         
         let dateValue = document.getElementById("selected_date").value
-        let date = new Date(dateValue)
+        let date = new Date(dateValue  + 'T00:00:00')
         let year = date.getFullYear()
         let month = date.getMonth() + 1
-        let monthName = months[date.getMonth() + 1]
+        let monthName = months[date.getMonth()]
         let day = date.getDate()
-
-        console.log(year, month, day)
 
         window.onload = function() {
             document.getElementById("viewBudgetBtn").click();
@@ -68,7 +68,6 @@
         document.getElementById("selected_date").addEventListener("change", function() {
             document.getElementById("viewBudgetBtn").click();
         })
-        console.log(year, monthName, day)
 
         document.getElementById("viewBudgetBtn").addEventListener("click", function() {
             document.getElementById("budgetDetailsTitle").innerHTML = ``;
@@ -81,9 +80,16 @@
                     document.getElementById("budgetDetails").style.display = "none";
                 }
                 else{
-                    document.getElementById("income").innerHTML = `Income: $${data.income}`;
-                    document.getElementById("expenses").innerHTML = `Expenses: $${data.expenses}`;
-                    var remainingBudget = data.income - data.expenses;
+                    let incomeTotal = 0, expenseTotal = 0;
+                    data.forEach(budget => {
+                        console.log(parseFloat(budget.income))
+                        incomeTotal += parseFloat(budget.income)
+                        expenseTotal += parseFloat(budget.expenses)
+                    });
+                    console.log(incomeTotal, expenseTotal)
+                    document.getElementById("income").innerHTML = `Income: $${incomeTotal}`;
+                    document.getElementById("expenses").innerHTML = `Expenses: $${expenseTotal}`;
+                    var remainingBudget = incomeTotal - expenseTotal;
                     document.getElementById("remaining").innerHTML = `Remaining Budget: $${remainingBudget}`;
                     document.getElementById("budgetDetails").style.display = "block";
                 }
@@ -96,7 +102,9 @@
 
         document.getElementById("addIncomeBtn").addEventListener("click", function() {
             if (month !== "") {
-                document.getElementById("income_month").value = date;
+                document.getElementById("income_year").value = `${year}`;
+                document.getElementById("income_month").value = `${month < 10 ? '0' + month : month}`;
+                document.getElementById("income_date").value = `${day}`;
                 document.getElementById("incomeForm").style.display = "block";
             } else {
                 alert("Please select a month first.");
@@ -105,7 +113,7 @@
 
         document.getElementById("addExpensesBtn").addEventListener("click", function() {
             if (month !== "") {
-                document.getElementById("expenses_month").value = month;
+                document.getElementById("income_date").value = `${year} ${month < 10 ? '0' + month : month} ${day}`;
                 document.getElementById("expensesForm").style.display = "block";
             } else {
                 alert("Please select a month first.");

@@ -49,9 +49,10 @@ def logout_user(request):
 # comes from the form data with the action /add-income/ (home.html). 
 def add_income(request):
     user = request.user
-    month = request.POST.get('month')
-    year = request.POST.get('year')
-    day = request.POST.get('day')
+    year = request.POST.get('incomeYear')
+    month = request.POST.get('incomeMonth')
+    day = request.POST.get('incomeDate')
+    print("test", year, month, day)
     income_amount = request.POST.get('income_amount')
     income_amount_decimal = Decimal(income_amount)
     budget, created = Budget.objects.get_or_create(user=user, year=year, month=month, day=day)
@@ -85,18 +86,10 @@ def get_budget(request):
         user = request.user
         month = request.GET.get('month')
         year = request.GET.get('year')
-        day = request.GET.get('day')
-        budget = Budget.objects.filter(user=user, year=year, month=month, day=day).first()
+        budget = Budget.objects.filter(user=user, year=year, month=month).values()
         print(budget)
         if budget:
-            data = {
-                'income': budget.income,
-                'year': budget.year,
-                'month': budget.month,
-                'day': budget.day,
-                'expenses': budget.expenses
-            }
-            return JsonResponse(data)
+            return JsonResponse(list(budget), safe=False)
         else:
             return JsonResponse({"error": "no budget set"}, status=400)
     
