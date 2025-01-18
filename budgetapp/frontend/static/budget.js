@@ -5,6 +5,7 @@ const months = [
 
 let today = new Date()
 let monthName = months[today.getMonth()]
+
 document.getElementById("selected_date").value = `${today.getFullYear()}-${(today.getMonth() + 1) < 10 ? '0' + (today.getMonth() + 1) : (today.getMonth() + 1)}-${today.getDate()}`
 
 let date = new Date(document.getElementById("selected_date").value  + 'T00:00:00')
