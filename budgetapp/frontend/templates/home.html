@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="{% static 'budget.js' %}" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.15.10/dist/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.15.10/dist/sweetalert2.min.css" rel="stylesheet">
+    <title>Budget Dashboard</title>
+</head>
+<body onload="viewBudget()">
+    <form id="logoutBtn" action="/logout-user/" method="post">
+        {% csrf_token %}
+        <button type="submit">Logout</button>
+    </form>
+    <h1>Budget Dashboard</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="selected_date">Select Month:</label>
+        <input type="date" id="selected_date" name="selected_date">
+        <button type="button" id="addIncomeBtn" onclick="addIncome()">Add Income</button>
+        <button type="button" id="addExpensesBtn" onclick="addExpenses()">Add Expenses</button>
+        <button type="button" id="viewBudgetBtn" style="display: none;" onclick="viewBudget()">View Budget</button>
+    </form>
+
+    <form id="incomeForm" action="/add-income/" method="post" style="display: none;">
+        <br>
+        {% csrf_token %}
+        <label for="income_amount">Enter Income Amount:</label>
+        <input type="text" name="income_amount" id="income_amount">
+        <input type="hidden" name="incomeYear" id="income_year">
+        <input type="hidden" name="incomeMonth" id="income_month">
+        <input type="hidden" name="incomeDate" id="income_date">
+        <button type="submit">Add Income</button>
+    </form>
+
+    <form id="expensesForm" action="/add-expenses/" method="post" style="display: none;">
+        <br>
+        {% csrf_token %}
+        <label for="expenses_amount">Enter Income Amount:</label>
+        <input type="text" name="expenses_amount" id="expenses_amount">
+        <input type="hidden" name="expenseYear" id="expense_year">
+        <input type="hidden" name="expenseMonth" id="expense_month">
+        <input type="hidden" name="expenseDate" id="expense_date">
+        <button type="submit">Add Expenses</button>
+    </form>
+
+    <h2 id="budgetDetailsTitle"></h2>
+    <div id="budgetDetails">
+        <p id="income"></p>
+        <p id="expenses"></p>
+        <p id="remaining"></p>
+    </div>
+</body>
+</html>
