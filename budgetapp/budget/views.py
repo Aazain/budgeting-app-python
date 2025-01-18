@@ -66,9 +66,9 @@ def add_income(request):
 
 def add_expenses(request):
     user = request.user
-    month = request.POST.get('month')
-    year = request.POST.get('year')
-    day = request.POST.get('day')
+    year = request.POST.get('expenseYear')
+    month = request.POST.get('expenseMonth')
+    day = request.POST.get('expenseDate')
     income_amount = request.POST.get('expenses_amount')
     income_amount_decimal = Decimal(income_amount)
     budget, created = Budget.objects.get_or_create(user=user, year=year, month=month, day=day)
@@ -87,7 +87,6 @@ def get_budget(request):
         month = request.GET.get('month')
         year = request.GET.get('year')
         budget = Budget.objects.filter(user=user, year=year, month=month).values()
-        print(budget)
         if budget:
             return JsonResponse(list(budget), safe=False)
         else:
