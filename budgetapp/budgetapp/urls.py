@@ -17,10 +17,11 @@ Including another URLconf
 from django.urls import path
 from budget.views import user_signup, user_login, home_page, get_budget, logout_user, add_income, add_expenses
 from django.contrib import admin
+from django.views.generic import TemplateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', home_page, name='home'),
+    path('', TemplateView.as_view(template_name='index.html')),
     path('signup/', user_signup, name='signup'),
     path('login/', user_login, name='login'),
     path('get-budget/', get_budget, name='get_budget'),

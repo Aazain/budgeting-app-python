@@ -1,3 +1,4 @@
+import json
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm
@@ -5,36 +6,38 @@ from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from .forms import signUpForm
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
 from .models import Budget
 from decimal import Decimal 
 
+@require_POST
 def user_signup(request):
-    if request.method == 'POST':
-        form = signUpForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=password)
+    data = json.loads(request.body.decode('utf-8'))
+    username = data.get('username')
+    password1 = data.get('password1')
+    form = signUpForm(data={'username': username, 'password1': password1, 'password2': password1})
+    print(form.is_valid())
+    if form.is_valid():
+        user = form.save()
+        user = authenticate(username=username, password=password1)
+        if user is not None:
             login(request, user)
-            return redirect('/')
-    else:
-        form = signUpForm()
-    return render(request, 'signup.html', {'form': form})
+            return JsonResponse({'message': 'Signup successful'}, status=200)
+    return JsonResponse({'message': 'Unable to create account, please try again.', 'details': form.errors}, status=400)
 
+
+
+@require_POST
 def user_login(request):
-    if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect('/')
-    else:
-        form = AuthenticationForm()
-    return render(request, 'login.html', {'form': form})
+    data = json.loads(request.body.decode('utf-8'))
+    username = data.get('username')
+    password = data.get('password')
+    user = authenticate(username=username, password=password)
+    print(user)
+    if user is not None:
+        login(request, user)
+        return JsonResponse({'message': 'Login successful'}, status=200)
+    return JsonResponse({'message': 'Invalid username or password'}, status=400)
 
 
 @login_required
