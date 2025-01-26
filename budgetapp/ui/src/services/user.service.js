@@ -44,7 +44,6 @@ export async function signup(username, password){
     });
 
     const result = await response.json();
-    console.log(result)
 
     if (response.ok) {
       return { success: true, data: result }
