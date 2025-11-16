@@ -1,3 +1,12 @@
+async function getCSRF(){
+  let csrftoken;
+
+  const response = await fetch('http://127.0.0.1:8000/csrf/')
+  const result = await response.json()
+
+  console.log(result)
+}
+
 export function getCsrfToken(){
     return document.cookie.split(';')
     .find(cookie => cookie.trim().startsWith('csrftoken='))

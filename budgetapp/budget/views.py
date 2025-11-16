@@ -1,15 +1,23 @@
 import json
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
-from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from .forms import signUpForm
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import ensure_csrf_cookie
+from django.views.decorators.csrf import csrf_exempt
+from django.middleware.csrf import get_token
 from .models import Budget
 from decimal import Decimal 
 
+@ensure_csrf_cookie
+def get_csrf(request):
+    token = get_token(request);
+    return JsonResponse({"csrftoken": token})
+
+@csrf_exempt
 @require_POST
 def user_signup(request):
     data = json.loads(request.body.decode('utf-8'))
@@ -25,8 +33,7 @@ def user_signup(request):
             return JsonResponse({'message': 'Signup successful'}, status=200)
     return JsonResponse({'message': 'Unable to create account, please try again.', 'details': form.errors}, status=400)
 
-
-
+@csrf_exempt
 @require_POST
 def user_login(request):
     data = json.loads(request.body.decode('utf-8'))

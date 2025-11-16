@@ -1,17 +1,21 @@
-export function getCsrfToken(){
-    return document.cookie.split(';')
-    .find(cookie => cookie.trim().startsWith('csrftoken='))
-    ?.split('=')[1];
+import { env } from "@/config/env";
+
+const getCsrfToken = async () => {
+  const res = await fetch("http://127.0.0.1:8000/csrf/", {
+    credentials: "include",
+  });
+  const data = await res.json()
+
+  return data.csrftoken
 }
 
 export async function login(username, password){
-    let csrftoken = getCsrfToken()    
     try {
-        const response = await fetch('http://127.0.0.1:8000/login/', {
+        const response = await fetch(`${env()}/login/`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'X-CSRFToken': csrftoken,  // Send CSRF token in the headers
+            'X-CSRFToken': csrfToken,  // Send CSRF token in the headers
           },
           credentials: 'include',  // Include cookies 
           body: JSON.stringify({ username: username, password: password }),  // Send data in JSON format
@@ -31,13 +35,16 @@ export async function login(username, password){
 }
 
 export async function signup(username, password){
-  let csrftoken = getCsrfToken();
+
+  let csrfToken = await getCsrfToken();
+  console.log(csrfToken)
+
   try{
-    const response = await fetch('http://127.0.0.1:8000/signup/', {
+    const response = await fetch(`${env()}/signup/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-CSRFToken': csrftoken,
+        'X-CSRFToken': csrfToken,
       },
       credentials: 'include',
       body: JSON.stringify({ username: username, password1: password, password2: password})
