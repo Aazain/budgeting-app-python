@@ -1,6 +1,14 @@
+import { Transaction } from "@/components/Transaction"
+import { getBudget } from "@/services/budget.service"
+
 const Dashboard = () => {
+
+    getBudget();
     return(
-        <h1>home</h1>
+        <div>
+            <h1>home</h1>
+            <Transaction/>
+        </div>
     )
 }
 

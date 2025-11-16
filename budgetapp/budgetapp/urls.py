@@ -18,6 +18,10 @@ from django.urls import path
 from budget.views import user_signup, user_login, home_page, get_budget, logout_user, add_income, add_expenses, get_csrf
 from django.contrib import admin
 from django.views.generic import TemplateView
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,6 +29,8 @@ urlpatterns = [
     path('signup/', user_signup, name='signup'),
     path('login/', user_login, name='login'),
     path('csrf/', get_csrf, name='get_csrf'),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('get-budget/', get_budget, name='get_budget'),
     path('logout-user/', logout_user, name='logout'),
     path('add-income/', add_income, name='add_income'),
