@@ -8,6 +8,7 @@ export const UserForm = (props) => {
   const router = useRouter();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [password2, setPassword2] = useState("");
 
     const handleSubmit = async (event) => {
       event.preventDefault();
@@ -22,8 +23,10 @@ export const UserForm = (props) => {
       else{
         try{
           let result;
-
-          props.authMode == 'Sign Up' ? result = await signup(username, password) : result = await login(username, password);
+          
+          props.authMode == 'Sign Up' 
+          ? result = await signup(username, password, password2) 
+          : result = await login(username, password);
 
           console.log(result)
 
@@ -59,6 +62,12 @@ export const UserForm = (props) => {
               <label>
                    <p>Password</p>
                   <input type="password" id="id_passsword" name="password" onChange={e => setPassword(e.target.value)}/>
+                  {props.authMode === 'Sign Up' &&
+                  <div>
+                    <p>Confirm Password</p>
+                    <input type="password" id="id_password2" name="password2" onChange={e => setPassword2(e.target.value)} />
+                  </div>
+                  }
               </label>
               <div>
                   <button type="submit">{props.authMode}</button>

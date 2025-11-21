@@ -15,7 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
-from budget.views import user_signup, user_login, home_page, get_budget, logout_user, add_income, add_expenses, get_csrf
+from budget.views import user_signup, get_budget, logout_user, add_income, add_expenses, add_transaction
 from django.contrib import admin
 from django.views.generic import TemplateView
 from rest_framework_simplejwt.views import (
@@ -27,11 +27,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', TemplateView.as_view(template_name='index.html')),
     path('signup/', user_signup, name='signup'),
-    path('login/', user_login, name='login'),
-    path('csrf/', get_csrf, name='get_csrf'),
+    # path('login/', user_login, name='login'),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('get-budget/', get_budget, name='get_budget'),
+    path('add-transaction/', add_transaction, name='add-transaction'),
     path('logout-user/', logout_user, name='logout'),
     path('add-income/', add_income, name='add_income'),
     path('add-expenses/', add_expenses, name='add_expenses'),

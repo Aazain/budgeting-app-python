@@ -51,7 +51,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -82,7 +82,8 @@ CORS_ALLOW_CREDENTIALS = True
 
 CSRF_COOKIE_HTTPONLY = False          
 CSRF_COOKIE_SAMESITE = "Lax"         
-CSRF_COOKIE_SECURE = True            
+CSRF_COOKIE_SECURE = False  
+CSRF_USE_SESSIONS = False          
 SESSION_COOKIE_SAMESITE = "Lax"
 SESSION_COOKIE_SECURE = True
 
@@ -123,7 +124,7 @@ WSGI_APPLICATION = 'budgetapp.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',  
-        'NAME': 'accountinfo',                      
+        'NAME': 'budgeting',                      
         'USER': 'postgres',                        
         'PASSWORD': 'password123',                 
         'HOST': 'localhost',                       

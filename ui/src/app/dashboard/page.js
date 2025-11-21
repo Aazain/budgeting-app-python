@@ -1,5 +1,9 @@
+"use client"
+
+
 import { Transaction } from "@/components/Transaction"
 import { getBudget } from "@/services/budget.service"
+import { useEffect } from "react";
 
 const Dashboard = () => {
 
