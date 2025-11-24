@@ -1,7 +1,7 @@
 "use client"
 
 
-import { Transaction } from "@/components/Transaction"
+import { Transaction } from "@/components/transaction/Transaction"
 import { getBudget } from "@/services/budget.service"
 import { useEffect } from "react";
 
