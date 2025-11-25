@@ -30,7 +30,7 @@ export const getBudget = async () => {
 }
 
 export const handleTransaction = async (transactionType='income', year='21', month='22', day='23', amount='24') => {
-     useEffect(() => {
+     try{
         const accessToken = localStorage.getItem("accessToken");
         const handleTransaction = async () => {
             try{
@@ -65,5 +65,7 @@ export const handleTransaction = async (transactionType='income', year='21', mon
         }
 
         handleTransaction()
-    })
+    }catch(err){
+        console.log(err)
+    }
 }

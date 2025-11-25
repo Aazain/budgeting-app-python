@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { usePathname, redirect } from "next/navigation";
-import { login, signup } from "../services/user.service";
+import { login, signup } from "../../services/user.service";
 import { useRouter } from 'next/navigation';
 import Swal from "sweetalert2";
 import { cn } from "@/lib/utils"
@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 
-export const UserForm = (props) => {
+export const UserForm = () => {
   const router = useRouter();
     const [authMode, setAuthMode] = useState("Sign Up")
     const [username, setUsername] = useState("");
