@@ -1,37 +1,48 @@
 "use client"
 
-
-import { Transaction } from "@/components/transaction/Transaction"
+import { useState } from "react"
 import { Sidebar } from "@/components/sidebar/Sidebar"
 import { getBudget } from "@/services/budget.service"
-import { InfoCard } from "@/components/infoCard/InfoCard"
+import { HistoryChart } from "@/components/historyChart/HistoryChart"
+import { HistoryList } from "@/components/historyList/HistoryList"
+import { FinanceCard } from "@/components/financeCard/FinanceCard"
 import { useEffect } from "react";
 
 const Dashboard = () => {
+    const [budget, setBudget] = useState(null)
 
-    getBudget();
+    useEffect(() => {
+        const date = new Date()
+        const fetchBudget = async () => {
+            const res = await getBudget(date.getFullYear(), date.getMonth()+1, date.getDate());  
+            
+            setBudget(res)
+        }
+        
+        fetchBudget()
+        console.log(budget)
+    },[])
+
     return(
-        <div className="grid gap-4 p-4 grid-cols-[300px,_1fr] round-lg ">
+        <div className="grid gap-4 p-4 grid-cols-[200px,_1fr] round-lg">
             <Sidebar/>
-            <div className="shadow-xl p-6 bg-[#003049] shadow-gray-400 rounded-2xl">
-                <div className="grid gap-4">
-                    <div className="grid gap-4 p-4 grid-cols-3 h-64">
+            <div className="p-4 rounded-2xl">
+                <div>
+                    <div className="grid grid-cols-3 gap-2 m-2">
                         {/* need the following cards: months income, months expenses, cashflow */}
                         {/* history line graph */}
                         {/* transaction history */}
-                        <InfoCard title='Income' description='' />
-                        <InfoCard title='Expenses' description='' />
-                        <InfoCard title='CashFlow' description='' >
-                            <h1>test</h1>
-                        </InfoCard>
+                        <FinanceCard title='Income' amount='25,232' type='positive' />
+                        <FinanceCard title='Expenses' amount='25,21' type='negative'/>
+                        <FinanceCard title='CashFlow' amount='250,32' type={`${0}`} />
                     </div>
 
-                    <div>
-                        
+                    <div className="m-2">
+                        <HistoryChart/>
                     </div>
                     
-                    <div className="p-2 shadow bg-gray-100">
-                        <Transaction/>
+                    <div className="m-2">
+                        <HistoryList/>
                     </div>
                 </div>
             </div>

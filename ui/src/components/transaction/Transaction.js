@@ -32,8 +32,8 @@ export const Transaction = () => {
     }
 
     return(
-        <div className="bg-green-500">
-            <button onClick={() => setOpen(true)}> New Transaction </button>
+        <div>
+            <button onClick={() => setOpen(true)} className="bg-[#780000] pl-4 pr-4 pt-2 pb-2 rounded-full text-white text-strong font-bold"> New Transaction </button>
             <Dialog open={open} onClose={setOpen}>
                 <DialogBackdrop
                 transition

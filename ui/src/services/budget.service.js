@@ -2,34 +2,27 @@ import { env } from "@/config/env";
 import { useEffect } from "react";
 import { refresh } from "./user.service";
 
-export const getBudget = async () => {
-    useEffect(() => {
+export const getBudget = async (year, month, day) => {
+    try{
         const accessToken = localStorage.getItem("accessToken");
-        const fetchBudget = async () => {
-            try{
-            console.log("accessed token" + accessToken)
+        console.log("accessed token" + accessToken)
 
-            const response = await fetch(`${env()}/get-budget?year=21&day=23&month=22`, {
-                method: "GET",
-                headers: { Authorization: `Bearer ${accessToken}` }
-            })
+        const response = await fetch(`${env()}/get-budget?year=${year}&month=${month}&day=${day}`, {
+            method: "GET",
+            headers: { Authorization: `Bearer ${accessToken}` }
+        })
 
-            const result = await response.json()
-            
-            console.log('response is:' + result)
-            result.forEach(item => {
-                console.log(item.amount);
-            });
-            } catch(err){
-                console.log(err)
-            }
-        }
-
-        fetchBudget()
-    })
+        const result = await response.json()
+        result.forEach(item => {
+            console.log(item.amount);
+        });
+        return result
+    } catch(err){
+        console.log(err)
+    }  
 }
 
-export const handleTransaction = async (transactionType='income', year='21', month='22', day='23', amount='24') => {
+export const handleTransaction = async (transactionType='income', year='2025', month='22', day='23', amount='24') => {
      try{
         const accessToken = localStorage.getItem("accessToken");
         const handleTransaction = async () => {
