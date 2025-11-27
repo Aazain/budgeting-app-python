@@ -7,28 +7,40 @@ import { HistoryChart } from "@/components/historyChart/HistoryChart"
 import { HistoryList } from "@/components/historyList/HistoryList"
 import { FinanceCard } from "@/components/financeCard/FinanceCard"
 import { useEffect } from "react";
+import { redirect } from "next/router"
+import { useRouter } from 'next/navigation';
+
 
 const Dashboard = () => {
+    const [isLoading, setLoading] = useState(true)
     const [budget, setBudget] = useState(null)
-
-    useEffect(() => {
-        const date = new Date()
-        const fetchBudget = async () => {
-            const res = await getBudget(date.getFullYear(), date.getMonth()+1, date.getDate());  
-            
-            setBudget(res)
+    const router = useRouter();
+    
+    const date = new Date()
+    const fetchBudget = async () => {
+        const res = await getBudget(date.getFullYear(), date.getMonth()+1, date.getDate());   
+        if(res.status == 401){
+            router.push('/auth');
+            return;
         }
         
+        setBudget(res)
+        setLoading(false)
+    }
+
+    useEffect(() => {
         fetchBudget()
-        console.log(budget)
     },[])
 
+    if (isLoading){
+        return (<h1>Loading</h1>)
+    }
     return(
-        <div className="grid gap-4 p-4 grid-cols-[200px,_1fr] round-lg">
+        <div className="grid gap-4 md:p-4 md:show md:grid-cols-[200px,_1fr] round-lg">
             <Sidebar/>
-            <div className="p-4 rounded-2xl">
+            <div className="p-4 rounded-2xl m-2">
                 <div>
-                    <div className="grid grid-cols-3 gap-2 m-2">
+                    <div className="grid md:grid-cols-3 gap-2 md-grid-cols-2">
                         {/* need the following cards: months income, months expenses, cashflow */}
                         {/* history line graph */}
                         {/* transaction history */}
@@ -37,12 +49,12 @@ const Dashboard = () => {
                         <FinanceCard title='CashFlow' amount='250,32' type={`${0}`} />
                     </div>
 
-                    <div className="m-2">
+                    <div className="mt-2">
                         <HistoryChart/>
                     </div>
                     
-                    <div className="m-2">
-                        <HistoryList/>
+                    <div className="mt-2">
+                        <HistoryList transactionData={budget}/>
                     </div>
                 </div>
             </div>

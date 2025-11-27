@@ -23,53 +23,53 @@ import { Input } from "@/components/ui/input"
 
 export const UserForm = () => {
   const router = useRouter();
-    const [authMode, setAuthMode] = useState("Sign Up")
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const [password2, setPassword2] = useState("");
+  const [authMode, setAuthMode] = useState("Sign Up")
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [password2, setPassword2] = useState("");
 
-    const handleSubmit = async (event) => {
-      event.preventDefault();
-      console.log('email:' + username )
-      console.log('password:' + password )
-      if(!username || !password){
-        Swal.fire({
-          icon: "error",
-          title: "Username and password are required.",
-          text: "Please try again.",
-        });
-      }
-      else{
-        try{
-          let result;
-          
-          authMode == 'Sign Up' 
-          ? result = await signup(username, password, password2) 
-          : result = await login(username, password);
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    console.log('email:' + username )
+    console.log('password:' + password )
+    if(!username || !password){
+      Swal.fire({
+        icon: "error",
+        title: "Username and password are required.",
+        text: "Please try again.",
+      });
+    }
+    else{
+      try{
+        let result;
+        
+        authMode == 'Sign Up' 
+        ? result = await signup(username, password, password2) 
+        : result = await login(username, password);
 
-          console.log(result)
+        console.log(result)
 
-          if (result.success === true){
-            router.push('/dashboard')
-          }
-          else{
-            Swal.fire({
-              icon: "error",
-              title: `${result.message}`,
-              text: `Please enter a valid username and password.`,
-            })
-          }
-        } catch(err) {
-            console.log(err)
-            Swal.fire({
-              icon: "error",
-              title: `${authMode} Failed`,
-              text: "Please try again.",
-            });
+        if (result.success === true){
+          router.push('/dashboard')
         }
+        else{
+          Swal.fire({
+            icon: "error",
+            title: `${result.message}`,
+            text: `Please enter a valid username and password.`,
+          })
+        }
+      } catch(err) {
+          console.log(err)
+          Swal.fire({
+            icon: "error",
+            title: `${authMode} Failed`,
+            text: "Please try again.",
+          });
       }
-    };
-    return(
+    }
+  };
+  return(
     <div className={cn("flex flex-col gap-6")}>
       <Card>
         <CardHeader className="text-center">

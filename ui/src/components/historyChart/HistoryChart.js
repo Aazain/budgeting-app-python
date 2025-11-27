@@ -1,6 +1,6 @@
 export const HistoryChart = () => {
     return(
-        <div class="relative flex flex-col bg-white shadow-sm rounded-lg p-8 h-[40vh]">
+        <div className="relative flex flex-col bg-white shadow-sm rounded-lg p-8 h-[40vh]">
             <h1>History Chart</h1>
         </div>
     )

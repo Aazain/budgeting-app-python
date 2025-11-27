@@ -12,17 +12,22 @@ export const getBudget = async (year, month, day) => {
             headers: { Authorization: `Bearer ${accessToken}` }
         })
 
+        if (response.status == 401){
+            return ({"message": 'Unauthorized Access', "status": response.status})
+        }
+
         const result = await response.json()
-        result.forEach(item => {
+        result?.forEach(item => {
             console.log(item.amount);
         });
         return result
     } catch(err){
-        console.log(err)
+        console.log('this is the error '+ err)
+        return err
     }  
 }
 
-export const handleTransaction = async (transactionType='income', year='2025', month='22', day='23', amount='24') => {
+export const handleTransaction = async (transactionType, year, month, day, amount) => {
      try{
         const accessToken = localStorage.getItem("accessToken");
         const handleTransaction = async () => {
